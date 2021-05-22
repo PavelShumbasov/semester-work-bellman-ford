@@ -1,12 +1,11 @@
-#include <fstream>      // ifstream
-#include <iostream>     // cout
-#include <string>       // string, stoi
-#include <string_view>  // string_view
-#include <chrono>       // high_resolution_clock, duration_cast, nanoseconds
-#include <sstream>      // stringstream
+#include <iostream>
+#include <fstream>
+#include "Timer.hpp"
+#include <filesystem>
+#include <string>
 
 // подключаем вашу структуру данных
-#include "data_structure.hpp"
+#include "algorithm.hpp"
 
 using namespace std;
 using namespace itis;
@@ -17,49 +16,39 @@ static constexpr auto kProjectPath = string_view{PROJECT_SOURCE_DIR};
 
 int main(int argc, char **argv) {
 
-  // Tip 1: входные аргументы позволяют более гибко контролировать работу вашей программы.
-  // Можете передать путь до входного/выходного тестового файла в качестве аргумента программы.
+    string path = ".\\dataset\\";
+    const string test_data_name = "data";
+    path += test_data_name;
 
-  for (int index = 0; index < argc; index++) {
-    cout << "Arg: " << argv[index] << '\n';
+    long int count_top[] = {500, 10000, 100000, 1000000, 5000000};
+    const int SETS_NUMBER = 5;
+    const int FILE_NUMBER = 10;
+    for (int set_n = 0; set_n < SETS_NUMBER; set_n++) {
+      cout << "---------SET NUMBER " << set_n << "---------" << endl;
+
+      double middle_time = 0;
+      for (int file_n = 1; file_n <= FILE_NUMBER; file_n++) {
+        string file_path = path + "\\" + to_string(count_top[set_n]) + "\\" + to_string(file_n) + ".txt";
+        ifstream file(file_path);
+
+        int n = 0;
+        int** matrix = create_graph(file, n);
+
+        bool has_negative_cycle = false;
+        Timer timer;
+        int* array_top = algorithm(matrix, n, has_negative_cycle);
+        double time = timer.elapsed();
+        cout << "Time taken: " << time << '\n';
+        cout << (has_negative_cycle ? "Graph has negative cycle" : "Graph hasn't negative cycle") << endl;
+        middle_time += time;
+
+        delete_matrix(matrix, n);
+        delete[] array_top;
+        file.close();
+      }
+      middle_time /= 10;
+      cout << "Middle time = " << middle_time;
+      cout << "--------------------------------" << endl;
+    }
   }
 
-  // Tip 2: для перевода строки в число можете использовать функцию stoi (string to integer)
-
-  // можете использовать функционал класса stringstream для обработки строки
-  auto ss = stringstream("0 1 2");  // передаете строку (входной аргумент или строку из файла) и обрабатываете ее
-
-  int number = 0;
-  ss >> number;  // number = 0
-  ss >> number;  // number = 1
-  ss >> number;  // number = 2
-
-  // работа с набором данных
-  const auto path = string(kDatasetPath);
-  cout << "Path to the 'dataset/' folder: " << path << endl;
-
-  auto input_file = ifstream(path + "/dataset-example.csv");
-
-  if (input_file) {
-    // чтение и обработка набора данных ...
-  }
-
-  // Контрольный тест: операции добавления, удаления, поиска и пр. над структурой данных
-
-  // Tip 3: время работы программы (или участка кода) можно осуществить
-  // как изнутри программы (std::chrono), так и сторонними утилитами
-
-  const auto time_point_before = chrono::steady_clock::now();
-
-  // здесь находится участок кода, время которого необходимо замерить
-
-  const auto time_point_after = chrono::steady_clock::now();
-
-  // переводим время в наносекунды
-  const auto time_diff = time_point_after - time_point_before;
-  const auto time_elapsed_ns = chrono::duration_cast<chrono::nanoseconds>(time_diff).count();
-
-  cout << "Time elapsed (ns): " << time_elapsed_ns << '\n';
-
-  return 0;
-}

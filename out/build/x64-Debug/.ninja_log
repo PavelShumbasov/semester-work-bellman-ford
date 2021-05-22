@@ -1,0 +1,11 @@
+# ninja log v5
+1	2302	6427931203659266	CMakeFiles/semester_work_bellman_ford.dir/src/algorithm.cpp.obj	b45c244053efa1c3
+10	2334	6427931203718856	CMakeFiles/main.dir/main.cpp.obj	ae24ef01edef0422
+13	2592	6427931206532001	benchmark/CMakeFiles/benchmark.dir/demo_benchmark.cpp.obj	8e44f495d887eaa9
+2328	2766	6427931208337190	semester_work_bellman_ford.lib	7fdf400f2d1b05a
+2766	3541	6427931215931984	main.exe	c2d766ced9f7003
+2770	3544	6427931215971875	benchmark/benchmark.exe	eb94a63f8e12cd39
+3	1559	6433159853566451	benchmark/CMakeFiles/benchmark.dir/demo_benchmark.cpp.obj	8e44f495d887eaa9
+1561	2021	6433159857724275	benchmark/benchmark.exe	eb94a63f8e12cd39
+1	1677	6433160055762244	benchmark/CMakeFiles/benchmark.dir/demo_benchmark.cpp.obj	8e44f495d887eaa9
+1678	2144	6433160059947339	benchmark/benchmark.exe	eb94a63f8e12cd39
